@@ -1,3 +1,6 @@
 nimcache/
-bin/
+bin/*
 !bin/.gitkeep
+
+tests/bin/*
+!tests/bin/.gitkeep

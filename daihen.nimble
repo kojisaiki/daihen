@@ -6,7 +6,7 @@ description   = "Lightweight proxy server."
 license       = "MIT"
 srcDir        = "src"
 bin           = @["daihen"]
-binDir        = "dist"
+binDir        = "bin"
 
 # Dependencies
 
