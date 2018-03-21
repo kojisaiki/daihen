@@ -7,34 +7,29 @@ type PacketData* = ref object
   fromLocalhost: bool
   host: tuple[ hostname: string, port: uint ]
 
-var clients {.threadvar.}: seq[AsyncSocket]
-
 proc processClient(client: AsyncSocket) {.async.} =
   #result = new PacketData
-
   var buf = ""
-  debug("read buffer start")
+  debug("process client start")
   while(buf.find("\r\n") < 0) :
     let line = await client.recvLine()
-    debug("read")
     if line.len == 0 : break
     buf.add(line)
+  debug("read buffer len: " & buf.len.intToStr)
 
-  debug("read buffer end")
-
-  debug("send")
-  await client.send("HTTP/1.0 200 OK Content-Length: 39\r\n\r\n<html><body>You are Http!</body></html>\r\n\r\n")
+  await client.send("HTTP/1.0 200 OK Content-Length: 39\r\n\r\n<html><body>You are Http!</body></html>\n")
+  client.close()
+  debug("process client end")
 
 proc serve() {.async.} =
   var socket = newAsyncSocket()
   socket.bindAddr(Port(12345))
-  socket.listen()
   var client = new AsyncSocket
+
+  debug("serve start")
+  socket.listen()
   while true:
-    debug("wait")
     let client = await socket.accept()
-    #clients.add(client)
-    debug("accept")
     asyncCheck processClient(client)
 
 proc main*() : void =
