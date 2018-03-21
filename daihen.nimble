@@ -14,3 +14,6 @@ requires "nim >= 0.18.0"
 
 # Tasks
 
+task test, "Original test":
+  withDir "tests":
+    exec "nim c -r tester"

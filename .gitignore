@@ -1,3 +1,3 @@
 nimcache/
-dist/
-!dist/.gitkeep
+bin/
+!bin/.gitkeep
